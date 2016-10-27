@@ -1,5 +1,5 @@
 # Legacy Associations and Validations
-#Person_B is Alex Guy
+#Person_A is Ben M
 ## Description
 
 Take an existing legacy codebase with no associations or validations and add them.
