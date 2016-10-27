@@ -43,14 +43,14 @@ class ApplicationTest < Minitest::Test
   def test_assign_leasson_to_course
     a = Course.new(name: "History", course_code: "HIS4556", color: "Red", period: "eighth", description: "History Course")
     a.save
-    new_lesson = a.lessons.create(name: "American History", description: "American History from 1820-1914", outline: "I will put outline here.")
+    new_lesson = a.lessons.create!(name: "American History", description: "American History from 1820-1914", outline: "I will put outline here.")
     assert_equal a.id, new_lesson.course_id
   end
 
   def test_destroy_course_and_lesson
     a = Course.new(name: "History", course_code: "HIS4556", color: "Red", period: "eighth", description: "History Course")
     a.save
-    new_lesson = a.lessons.create(name: "American History", description: "American History from 1820-1914", outline: "I will put outline here.")
+    new_lesson = a.lessons.create!(name: "American History", description: "American History from 1820-1914", outline: "I will put outline here.")
     a.destroy
     assert_raises do
       Course.find(a.id)
@@ -58,6 +58,24 @@ class ApplicationTest < Minitest::Test
     assert_raises do
       Lesson.find(new_lesson.id)
     end
+  end
+
+  def test_assign_course_instructor_to_course
+    a = Course.new(name: "History", course_code: "HIS4556", color: "Red", period: "eighth", description: "History Course")
+    a.save
+    new_course_instructor = a.course_instructors.create!
+    assert_equal a.id, new_course_instructor.course_id
+  end
+
+  def test_destroy_course_but_not_course_instructor
+    a = Course.new(name: "History", course_code: "HIS4556", color: "Red", period: "eighth", description: "History Course")
+    a.save
+    new_course_instructor = a.course_instructors.create!
+    a.destroy
+    assert_raises do
+      Course.find(a.id)
+    end
+    refute_equal nil, CourseInstructor.find(new_course_instructor.id)
   end
 
 
