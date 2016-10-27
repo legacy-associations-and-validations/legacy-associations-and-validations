@@ -1,6 +1,7 @@
 class Lesson < ActiveRecord::Base
   has_many :readings, dependent: :destroy
   belongs_to :course
+  has_many :assignments
 
   delegate :code_and_name, to: :course, prefix: true
 
@@ -11,6 +12,11 @@ class Lesson < ActiveRecord::Base
   def add_reading(new_reading)
     new_reading.lesson_id = self.id
     new_reading.save
+  end
+
+  def add_inclass_assignment(new_assignment)
+    self.in_class_assignment_id = new_assignment.id
+    self.save
   end
 
   def self.linked_to_assignment(assignment)

@@ -65,5 +65,14 @@ class LessonTest < Minitest::Test
     end
   end
 
+  def test_add_inclass_assignment_to_lesson
+    a = Lesson.new(course_id: 12, name: "American History", description: "American History from 1820-1914", outline: "I will put outline here.")
+    a.save
+    new_assignment = Assignment.new(name: "First inclass reading")
+    new_assignment.save
+    a.add_inclass_assignment(new_assignment)
+    assert_equal a.in_class_assignment_id, new_assignment.id
+  end
+
 
 end
