@@ -22,7 +22,7 @@ ApplicationMigration.migrate(:up)
 
 
 # Finally!  Let's test the thing.
-class ApplicationTest < Minitest::Test
+class LessonTest < Minitest::Test
 
   def test_truth
     assert true
