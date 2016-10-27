@@ -48,18 +48,14 @@ class ApplicationTest < Minitest::Test
   def test_assign_reading_to_lesson
     a = Lesson.new(course_id: 12, name: "American History", description: "American History from 1820-1914", outline: "I will put outline here.")
     a.save
-    new_reading = Reading.new(caption: "Reading_1", url: "google.com")
-    new_reading.save
-    a.add_reading(new_reading)
+    new_reading = a.readings.create(caption: "Reading_1", url: "google.com")
     assert_equal a.id, new_reading.lesson_id
   end
 
   def test_destroy_lesson_and_reading
     a = Lesson.new(course_id: 12, name: "American History", description: "American History from 1820-1914", outline: "I will put outline here.")
     a.save
-    new_reading = Reading.new(caption: "Reading_1", url: "google.com")
-    new_reading.save
-    a.add_reading(new_reading)
+    new_reading = a.readings.create(caption: "Reading_1", url: "google.com")
     a.destroy
     assert_raises do
       Lesson.find(a.id)
