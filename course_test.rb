@@ -17,6 +17,8 @@ adapter:  'sqlite3',
 database: 'test.sqlite3'
 )
 
+ActiveRecord::Migration.verbose = false
+
 # Gotta run migrations before we can run tests.  Down will fail the first time,
 # so we wrap it in a begin/rescue.
 begin ApplicationMigration.migrate(:down); rescue; end
@@ -109,6 +111,19 @@ class ApplicationTest < Minitest::Test
     course_student1 = course.course_students.create!
     course_student2 = course.course_students.create!
     refute course.destroy
+  end
+
+  def test_assignments_destroyed_if_course_destroyed
+    course = Course.create!
+    assignment1 = course.assignments.create!
+    assignment2 = course.assignments.create!
+    course.destroy
+    assert_raises do
+      Assignment.find(assignment1.id)
+    end
+    assert_raises do
+      Assignment.find(assignment2.id)
+    end
   end
 
 end
