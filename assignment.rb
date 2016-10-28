@@ -1,5 +1,5 @@
 class Assignment < ActiveRecord::Base
-  belongs_to :lesson
+  has_many :lesson
 
   belongs_to :course
 
