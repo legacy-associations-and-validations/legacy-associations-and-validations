@@ -42,6 +42,10 @@ ApplicationMigration.migrate(:up)
 
 class ApplicationTest < Minitest::Test
 
+  def setup
+    Course.delete_all
+  end
+
   def test_truth
     assert true
   end
@@ -134,7 +138,15 @@ class ApplicationTest < Minitest::Test
 
   def test_courses_cannot_be_created_without_name
     assert_raises do
-      Reading.create!(course_code: "seven")
+      Course.create!(course_code: "seven")
+    end
+  end
+
+  def test_course_code_for_uniqueness_on_term_id
+    term = Term.create!
+    term.courses.create!(name: "history", course_code: "seven")
+    assert_raises do
+      term.courses.create!(name: "math", course_code: "seven")
     end
   end
 
