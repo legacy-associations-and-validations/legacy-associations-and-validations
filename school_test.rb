@@ -1,5 +1,6 @@
 require 'minitest/autorun'
 require 'minitest/pride'
+require 'pry'
 
 require './migration'
 require './application'
@@ -28,6 +29,15 @@ class ApplicationTest < Minitest::Test
     school = School.create!
     term = school.terms.create!
     assert_equal school.id, term.school_id
+  end
+
+  def test_schools_have_courses_through_terms
+    school = School.create!
+    term = school.terms.create!
+    course1 = term.courses.create!
+    course2 = term.courses.create!
+    assert course1, school.courses.first
+    assert course2, school.courses.last
   end
 
 end
