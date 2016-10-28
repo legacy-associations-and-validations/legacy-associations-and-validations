@@ -101,24 +101,24 @@ class ApplicationTest < Minitest::Test
 
 
   def test_create_course
-    assert Course.create!(name: "history", course_code: "seven")
+    assert Course.create!(name: "history", course_code: "seven777")
   end
 
   def test_courses_associate_with_students
-    course = Course.create!(name: "history", course_code: "seven")
+    course = Course.create!(name: "history", course_code: "seven777")
     course_student = course.course_students.create!
     assert_equal course.id, course_student.course_id
   end
 
   def test_courses_will_not_delete_with_dependents
-    course = Course.create!(name: "history", course_code: "seven")
+    course = Course.create!(name: "history", course_code: "seven777")
     course_student1 = course.course_students.create!
     course_student2 = course.course_students.create!
     refute course.destroy
   end
 
   def test_assignments_destroyed_if_course_destroyed
-    course = Course.create!(name: "history", course_code: "seven")
+    course = Course.create!(name: "history", course_code: "seven777")
     assignment1 = course.assignments.create!
     assignment2 = course.assignments.create!
     course.destroy
@@ -138,16 +138,23 @@ class ApplicationTest < Minitest::Test
 
   def test_courses_cannot_be_created_without_name
     assert_raises do
-      Course.create!(course_code: "seven")
+      Course.create!(course_code: "seven777")
     end
   end
 
   def test_course_code_for_uniqueness_on_term_id
     term = Term.create!
-    term.courses.create!(name: "history", course_code: "seven")
+    term.courses.create!(name: "history", course_code: "seven777")
     assert_raises do
-      term.courses.create!(name: "math", course_code: "seven")
+      term.courses.create!(name: "math", course_code: "seven777")
     end
+  end
+
+  def test_course_code_starts_with_letters_and_ends_with_numbers
+    assert_raises do
+      Course.create!(name: "history", course_code: "seven")
+    end
+    assert Course.create!(name: "history", course_code: "seven777")
   end
 
 end

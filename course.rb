@@ -6,6 +6,7 @@ class Course < ActiveRecord::Base
   has_many :assignments, dependent: :destroy
   validates_presence_of :course_code, :name
   validates :course_code, uniqueness: { scope: :term_id }
+  validates :course_code, format: { with: /\A[a-zA-Z]{3,}\d{3,}\z/ }
 
   default_scope { order("courses.term_id DESC, courses.course_code, courses.id DESC") }
 
