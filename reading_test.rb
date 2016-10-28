@@ -22,25 +22,32 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_create_reading
-    assert Reading.create!(lesson_id: 2, caption: "hey", url: "www.reading.com", order_number: 3, created_at: Date.today, updated_at: Date.today)
+    assert Reading.create!(lesson_id: 2, caption: "hey", url: "https://www.reading.com", order_number: 3, created_at: Date.today, updated_at: Date.today)
   end
 
-  def test_order_number_validation
+  def test_order_number_presence_validation
     assert_raises do
-      Reading.create!(lesson_id: 2, caption: "hey", url: "www.reading.com", order_number: nil, created_at: Date.today, updated_at: Date.today)
+      Reading.create!(lesson_id: 2, caption: "hey", url: "https://www.reading.com", order_number: nil, created_at: Date.today, updated_at: Date.today)
     end
   end
 
-  def test_lesson_id_validation
+  def test_lesson_id_presence_validation
     assert_raises do
-      Reading.create!(lesson_id: nil, caption: "hey", url: "www.reading.com", order_number: 3, created_at: Date.today, updated_at: Date.today)
+      Reading.create!(lesson_id: nil, caption: "hey", url: "https://www.reading.com", order_number: 3, created_at: Date.today, updated_at: Date.today)
     end
   end
 
-  def test_url_validation
+  def test_url_presence_validation
     assert_raises do
       Reading.create!(lesson_id: 2, caption: "hey", url: nil, order_number: 3, created_at: Date.today, updated_at: Date.today)
     end
+  end
+
+  def test_url_contains_https_validation
+    assert_raises do
+      Reading.create!(lesson_id: 2, caption: "hey", url: "www.reading.com", order_number: 3, created_at: Date.today, updated_at: Date.today)
+    end
+    assert Reading.create!(lesson_id: 2, caption: "hey", url: "https://www.reading.com", order_number: 3, created_at: Date.today, updated_at: Date.today)
   end
 
 end
