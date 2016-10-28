@@ -1,5 +1,6 @@
 class Reading < ActiveRecord::Base
   belongs_to :lesson
+  validates_presence_of :order_number, :lesson_id, :url
 
   default_scope { order('order_number') }
 
