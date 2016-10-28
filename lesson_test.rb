@@ -79,15 +79,21 @@ class LessonTest < Minitest::Test
 
   def test_lessons_associated_with_pre_class_assignments
     a = Assignment.create!
-    lesson = Lesson.create!
+    lesson = Lesson.create!(course_id: 12, name: "American History", description: "American History from 1820-1914", outline: "I will put outline here.")
     lesson.pre_class_assignment = a
     assert lesson.pre_class_assignment_id, a.id
   end
 
   def test_can_create_lesson_from_assignment
     a = Assignment.create!
-    lesson = a.pre_class_assignments.create!
+    lesson = a.pre_class_assignments.create!(name: "yay")
     assert lesson
+  end
+
+  def test_lesson_creation_requires_a_name
+    assert_raises do
+      Lesson.create!
+    end
   end
 
 end
