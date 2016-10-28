@@ -115,8 +115,8 @@ class ApplicationTest < Minitest::Test
 
   def test_assignments_destroyed_if_course_destroyed
     course = Course.create!
-    assignment1 = course.assignments.create!
-    assignment2 = course.assignments.create!
+    assignment1 = course.assignments.create!(name: "First_day_of_reading", percent_of_grade: 0.02)
+    assignment2 = course.assignments.create!(name: "Second_day_of_reading", percent_of_grade: 0.03)
     course.destroy
     assert_raises do
       Assignment.find(assignment1.id)

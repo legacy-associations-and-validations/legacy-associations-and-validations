@@ -1,4 +1,7 @@
 class Assignment < ActiveRecord::Base
+  validates_presence_of :course_id, :name, :percent_of_grade
+  validates_uniqueness_of :name, scope: [:course_id]
+
   has_many :lesson
 
   belongs_to :course

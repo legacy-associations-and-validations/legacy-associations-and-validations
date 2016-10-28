@@ -22,11 +22,9 @@ class ApplicationTest < Minitest::Test
 
   #NOT THE RIGHT WAY TO DO THIS
   def test_validate_creation_of_new_school_without_name_creates_error
-    begin
-      school = School.create!
-    rescue Exception
+    assert_raises do
+      School.create!
     end
-    assert_equal school, nil
   end
 
   def test_create_school
@@ -35,7 +33,7 @@ class ApplicationTest < Minitest::Test
 
   def test_schools_associate_with_terms
     school = School.create!(name: "Bob\'s Art School for the Left Handed")
-    term = school.terms.create!(name: "Term Name")
+    term = school.terms.create!(name: "American History", starts_on: Date.new(1999,9,10),ends_on: Date.new(2000/11/20))
     assert_equal school.id, term.school_id
   end
 
