@@ -68,9 +68,20 @@ class ApplicationTest < Minitest::Test
     end
   end
 
-  def test_email_is_valid_no_com_ending
-    new_user = User.create!(first_name: "Alex", last_name: "Guy", email: "amax3006@gmail.com",photo_url: "http://")
-    assert_equal new_user.photo_url, "test"
+  def test_email_photo_url_error_for_not_starting_correctly
+    assert_raises do
+    User.create!(first_name: "Alex", last_name: "Guy", email: "amax3006@gmail.com",photo_url: "dsafhttp://")
+    end
+  end
+
+  def test_email_is_valid_http_start_for_photo_url
+    new_user = User.create!(first_name: "Alex", last_name: "Guy", email: "amax3007@gmail.com",photo_url: "http://")
+    assert_equal new_user.photo_url, "http://"
+  end
+
+  def test_email_is_valid_https_start_for_photo_url
+    new_user = User.create!(first_name: "Alex", last_name: "Guy", email: "amax3008@gmail.com",photo_url: "https://")
+    assert_equal new_user.photo_url, "https://"
   end
 
 end
