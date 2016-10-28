@@ -33,39 +33,44 @@ class ApplicationTest < Minitest::Test
 
   def test_new_user_needs_first_name
     assert_raises do
-    User.create!(last_name: "Guy", email: "amax3001@gmail.com")
+      User.create!(last_name: "Guy", email: "amax3001@gmail.com")
     end
   end
 
   def test_new_user_needs_last_name
     assert_raises do
-    User.create!(first_name: "Alex", email: "amax3002@gmail.com")
+      User.create!(first_name: "Alex", email: "amax3002@gmail.com")
     end
   end
 
   def test_new_user_needs_email
     assert_raises do
-    User.create!(first_name: "Alex", last_name: "Guy")
+      User.create!(first_name: "Alex", last_name: "Guy")
     end
   end
 
   def test_email_is_unique_block
     User.create!(first_name: "Alex", last_name: "Guy", email: "amax3002@gmail.com")
     assert_raises do
-    User.create!(first_name: "Larry", last_name: "Guy", email: "amax3002@gmail.com")
+      User.create!(first_name: "Larry", last_name: "Guy", email: "amax3002@gmail.com")
     end
   end
 
   def test_email_is_valid_no_AT_sign
     assert_raises do
-    User.create!(first_name: "Alex", last_name: "Guy", email: "amax3004gmail.com")
+      User.create!(first_name: "Alex", last_name: "Guy", email: "amax3004gmail.com")
     end
   end
 
   def test_email_is_valid_no_com_ending
     assert_raises do
-    User.create!(first_name: "Alex", last_name: "Guy", email: "amax3005@gmail.")
+      User.create!(first_name: "Alex", last_name: "Guy", email: "amax3005@gmail.")
     end
+  end
+
+  def test_email_is_valid_no_com_ending
+    new_user = User.create!(first_name: "Alex", last_name: "Guy", email: "amax3006@gmail.com",photo_url: "http://")
+    assert_equal new_user.photo_url, "test"
   end
 
 end
