@@ -1,6 +1,7 @@
 # Basic test requires
 require 'minitest/autorun'
 require 'minitest/pride'
+require 'pry'
 
 # Include both the migration and the app itself
 require './migration'
@@ -14,6 +15,8 @@ ActiveRecord::Base.establish_connection(
 adapter:  'sqlite3',
 database: 'test.sqlite3'
 )
+
+ActiveRecord::Migration.verbose = false
 
 # Gotta run migrations before we can run tests.  Down will fail the first time,
 # so we wrap it in a begin/rescue.
@@ -74,5 +77,17 @@ class LessonTest < Minitest::Test
     assert_equal a.in_class_assignment_id, new_assignment.id
   end
 
+  def test_lessons_associated_with_pre_class_assignments
+    a = Assignment.create!
+    lesson = Lesson.create!
+    lesson.pre_class_assignment = a
+    assert lesson.pre_class_assignment_id, a.id
+  end
+
+  def test_can_create_lesson_from_assignment
+    a = Assignment.create!
+    lesson = a.pre_class_assignments.create!
+    assert lesson
+  end
 
 end
