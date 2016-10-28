@@ -97,24 +97,24 @@ class ApplicationTest < Minitest::Test
 
 
   def test_create_course
-    assert Course.create!
+    assert Course.create!(name: "history", course_code: "seven")
   end
 
   def test_courses_associate_with_students
-    course = Course.create!
+    course = Course.create!(name: "history", course_code: "seven")
     course_student = course.course_students.create!
     assert_equal course.id, course_student.course_id
   end
 
   def test_courses_will_not_delete_with_dependents
-    course = Course.create!
+    course = Course.create!(name: "history", course_code: "seven")
     course_student1 = course.course_students.create!
     course_student2 = course.course_students.create!
     refute course.destroy
   end
 
   def test_assignments_destroyed_if_course_destroyed
-    course = Course.create!
+    course = Course.create!(name: "history", course_code: "seven")
     assignment1 = course.assignments.create!
     assignment2 = course.assignments.create!
     course.destroy
@@ -123,6 +123,18 @@ class ApplicationTest < Minitest::Test
     end
     assert_raises do
       Assignment.find(assignment2.id)
+    end
+  end
+
+  def test_courses_cannot_be_created_without_code
+    assert_raises do
+      Course.create!(name: "history")
+    end
+  end
+
+  def test_courses_cannot_be_created_without_name
+    assert_raises do
+      Reading.create!(course_code: "seven")
     end
   end
 
