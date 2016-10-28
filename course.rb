@@ -1,9 +1,11 @@
 class Course < ActiveRecord::Base
-  has_many :lessons, dependent: :destroy
-  has_many :course_instructors
+
   belongs_to :term
   has_many :course_students, dependent: :restrict_with_error
   has_many :assignments, dependent: :destroy
+  has_many :lessons, dependent: :destroy
+  has_many :course_instructors
+  has_many :readings, through: :lessons
   validates_presence_of :course_code, :name
   validates :course_code, uniqueness: { scope: :term_id }
   validates :course_code, format: { with: /\A[a-zA-Z]{3,}\d{3,}\z/ }

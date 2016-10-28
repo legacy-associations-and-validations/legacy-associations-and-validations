@@ -1,16 +1,11 @@
-# Basic test requires
 require 'minitest/autorun'
 require 'minitest/pride'
 require 'pry'
-
-# Include both the migration and the app itself
 require './migration'
 require './application'
-
 require './reading'
 require './lesson'
 
-# Overwrite the development database connection with a test connection.
 ActiveRecord::Base.establish_connection(
 adapter:  'sqlite3',
 database: 'test.sqlite3'
@@ -18,13 +13,9 @@ database: 'test.sqlite3'
 
 ActiveRecord::Migration.verbose = false
 
-# Gotta run migrations before we can run tests.  Down will fail the first time,
-# so we wrap it in a begin/rescue.
 begin ApplicationMigration.migrate(:down); rescue; end
 ApplicationMigration.migrate(:up)
 
-
-# Finally!  Let's test the thing.
 class LessonTest < Minitest::Test
 
   def test_truth
@@ -78,15 +69,17 @@ class LessonTest < Minitest::Test
   end
 
   def test_lessons_associated_with_pre_class_assignments
-    a = Assignment.create!
+    a = Course.create!(name: "History", course_code: "HIS4556", color: "Red", period: "eighth", description: "History Course")
+    b = Assignment.create!(name: "First_day_of_reading", percent_of_grade: 0.02, course_id: a.id)
     lesson = Lesson.create!(course_id: 12, name: "American History", description: "American History from 1820-1914", outline: "I will put outline here.")
-    lesson.pre_class_assignment = a
-    assert lesson.pre_class_assignment_id, a.id
+    lesson.pre_class_assignment = b
+    assert lesson.pre_class_assignment_id, b.id
   end
 
   def test_can_create_lesson_from_assignment
-    a = Assignment.create!
-    lesson = a.pre_class_assignments.create!(name: "yay")
+    a = Course.create!(name: "History", course_code: "HIS4557", color: "Red", period: "eighth", description: "History Course")
+    b = Assignment.create!(name: "First_day_of_reading", percent_of_grade: 0.02, course_id: a.id)
+    lesson = b.pre_class_assignments.create!(name: "yay")
     assert lesson
   end
 

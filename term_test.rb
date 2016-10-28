@@ -3,6 +3,7 @@ require 'minitest/pride'
 require 'pry'
 require './migration'
 require './application'
+require './school'
 
 ActiveRecord::Base.establish_connection(
   adapter:  'sqlite3',
@@ -21,20 +22,24 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_create_term
-    assert Term.create!
+    new_school = School.create!(name: "New School")
+    new_term = new_school.terms.create!(name: "American History", starts_on: Date.new(1999,9,10),ends_on: Date.new(2000/11/20))
+    assert_equal new_term.school_id, new_school.id
   end
 
   def test_terms_associate_with_courses
-    term = Term.create!
-    course = term.courses.create!
-    assert_equal term.id, course.term_id
+    new_school = School.create!(name: "New School")
+    new_term = new_school.terms.create!(name: "American History", starts_on: Date.new(1999,9,10),ends_on: Date.new(2000/11/20))
+    course = new_term.courses.create!(name: "course 1", course_code: "aaa111")
+    assert_equal new_term.id, course.term_id
   end
 
   def test_terms_will_not_delete_with_dependents
-    term = Term.create!
-    course1 = term.courses.create!
-    course2 = term.courses.create!
-    refute term.destroy
+    new_school = School.create!(name: "New School")
+    new_term = new_school.terms.create!(name: "American History", starts_on: Date.new(1999,9,10),ends_on: Date.new(2000/11/20))
+    course1 = new_term.courses.create!(name: "course 1", course_code: "aaa111")
+    course2 = new_term.courses.create!(name: "course 2", course_code: "aaa112")
+    refute new_term.destroy
   end
 
 end

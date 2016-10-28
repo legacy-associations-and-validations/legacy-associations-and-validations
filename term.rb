@@ -2,6 +2,7 @@ class Term < ActiveRecord::Base
 
   belongs_to :school
   has_many :courses, dependent: :restrict_with_error
+  validates_presence_of :name, :starts_on, :ends_on, :school_id
 
   default_scope { order('ends_on DESC') }
 

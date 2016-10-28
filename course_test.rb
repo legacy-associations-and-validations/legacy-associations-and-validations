@@ -35,11 +35,6 @@ ActiveRecord::Base.establish_connection(
   database: 'test.sqlite3'
 )
 
-ActiveRecord::Migration.verbose = false
-
-begin ApplicationMigration.migrate(:down); rescue; end
-ApplicationMigration.migrate(:up)
-
 class ApplicationTest < Minitest::Test
 
   def setup
@@ -119,8 +114,8 @@ class ApplicationTest < Minitest::Test
 
   def test_assignments_destroyed_if_course_destroyed
     course = Course.create!(name: "history", course_code: "seven777")
-    assignment1 = course.assignments.create!
-    assignment2 = course.assignments.create!
+    assignment1 = course.assignments.create!(name: "First_day_of_reading", percent_of_grade: 0.02)
+    assignment2 = course.assignments.create!(name: "Second_day_of_reading", percent_of_grade: 0.03)
     course.destroy
     assert_raises do
       Assignment.find(assignment1.id)
@@ -143,10 +138,11 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_course_code_for_uniqueness_on_term_id
-    term = Term.create!
-    term.courses.create!(name: "history", course_code: "seven777")
+    new_school = School.create!(name: "New School")
+    new_term = new_school.terms.create!(name: "American History", starts_on: Date.new(1999,9,10),ends_on: Date.new(2000/11/20))
+    new_term.courses.create!(name: "history", course_code: "seven777")
     assert_raises do
-      term.courses.create!(name: "math", course_code: "seven777")
+      new_term.courses.create!(name: "math", course_code: "seven777")
     end
   end
 
