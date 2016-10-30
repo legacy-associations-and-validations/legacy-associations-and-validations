@@ -14,7 +14,7 @@ ActiveRecord::Migration.verbose = false
 begin ApplicationMigration.migrate(:down); rescue; end
 ApplicationMigration.migrate(:up)
 
-class ApplicationTest < Minitest::Test
+class ReadingTest < Minitest::Test
 
   def test_truth
     assert true

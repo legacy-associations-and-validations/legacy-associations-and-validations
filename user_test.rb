@@ -14,7 +14,7 @@ ActiveRecord::Migration.verbose = false
 begin ApplicationMigration.migrate(:down); rescue; end
 ApplicationMigration.migrate(:up)
 
-class ApplicationTest < Minitest::Test
+class UserTest < Minitest::Test
 
   def test_truth
     assert true
@@ -64,7 +64,7 @@ class ApplicationTest < Minitest::Test
 
   def test_email_photo_url_error_for_not_starting_correctly
     assert_raises do
-    User.create!(first_name: "Alex", last_name: "Guy", email: "amax3006@gmail.com",photo_url: "dsafhttp://")
+    User.create!(first_name: "Alex", last_name: "Guy", email: "amax3006@gmail.com", photo_url: "dsafhttp://")
     end
   end
 

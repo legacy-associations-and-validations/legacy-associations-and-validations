@@ -14,7 +14,7 @@ ActiveRecord::Migration.verbose = false
 begin ApplicationMigration.migrate(:down); rescue; end
 ApplicationMigration.migrate(:up)
 
-class ApplicationTest < Minitest::Test
+class AssignmentTest < Minitest::Test
 
   def setup
     Course.delete_all
