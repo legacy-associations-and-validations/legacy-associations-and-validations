@@ -55,8 +55,7 @@ class AssignmentTest < Minitest::Test
     b = Course.create!(name: "Art", course_code: "ART4556", color: "Blue", period: "first", description: "Modern Art Course")
     new_assignment = a.assignments.create!(name: "First_day_of_reading", percent_of_grade: 0.02)
     new_assignment2 = b.assignments.create!(name: "First_day_of_reading", percent_of_grade: 0.03)
-    refute_equal new_assignment.id, nil
-    refute_equal new_assignment2.id, nil
+    refute_equal new_assignment.id, new_assignment2.id
   end
 
   def test_creation_of_assignment_unique_name_and_course_id_produce_error
